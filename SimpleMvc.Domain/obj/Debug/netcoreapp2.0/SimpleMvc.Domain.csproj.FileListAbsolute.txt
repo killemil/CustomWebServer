@@ -1,0 +1,9 @@
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\bin\Debug\netcoreapp2.0\SimpleMvc.Domain.deps.json
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\bin\Debug\netcoreapp2.0\SimpleMvc.Domain.dll
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\bin\Debug\netcoreapp2.0\SimpleMvc.Domain.pdb
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\obj\Debug\netcoreapp2.0\SimpleMvc.Domain.csprojResolveAssemblyReference.cache
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\obj\Debug\netcoreapp2.0\SimpleMvc.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\obj\Debug\netcoreapp2.0\SimpleMvc.Domain.AssemblyInfoInputs.cache
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\obj\Debug\netcoreapp2.0\SimpleMvc.Domain.AssemblyInfo.cs
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\obj\Debug\netcoreapp2.0\SimpleMvc.Domain.dll
+C:\Users\Alien\source\repos\WebServer\SimpleMvc.Domain\obj\Debug\netcoreapp2.0\SimpleMvc.Domain.pdb

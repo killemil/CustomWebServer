@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {
+      "SimpleMcv.Framework/1.0.0": {
+        "dependencies": {
+          "WebServer": "1.0.0"
+        },
+        "runtime": {
+          "SimpleMcv.Framework.dll": {}
+        }
+      },
+      "WebServer/1.0.0": {
+        "runtime": {
+          "WebServer.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SimpleMcv.Framework/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "WebServer/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

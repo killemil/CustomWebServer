@@ -10,6 +10,7 @@
         {
             RegisterAssemblyName();
             RegisterControllersData();
+            RegisterResourcesData();
             RegisterViewsData();
             RegisterModelsData();
 
@@ -32,6 +33,11 @@
         {
             MvcContext.Get.ControllersFolder = "Controllers";
             MvcContext.Get.ControllersSuffix = "Controller";
+        }
+
+        private static void RegisterResourcesData()
+        {
+            MvcContext.Get.ResourcesFolder = "Resources";
         }
 
         private static void RegisterViewsData()

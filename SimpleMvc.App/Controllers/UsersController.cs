@@ -6,9 +6,8 @@
     using BindingModels;
     using SimpleMvc.Domain;
     using SimpleMvc.Data;
-    using SimpleMcv.Framework.Interfaces.Generic;
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
 
     public class UsersController : Controller
@@ -22,6 +21,11 @@
         [HttpPost]
         public IActionResult Register(RegisterUserBindingModel model)
         {
+            if (!this.IsValidModel(model))
+            {
+                return View();
+            }
+
             var user = new User
             {
                 Username = model.Username,
@@ -36,62 +40,107 @@
 
             return View();
         }
-
-        public IActionResult<AllUsernamesViewModel> All()
-        {
-            List<string> usernames = null;
-            using (var db = new SimpleAppDb())
-            {
-                usernames = db.Users.Select(u => u.Username).ToList();
-            }
-
-            var viewModel = new AllUsernamesViewModel
-            {
-                Usernames = usernames
-            };
-
-            return View(viewModel);
-        }
-
+        
         [HttpGet]
-        public IActionResult<UserProfileViewModel> Profile(int id)
+        public IActionResult Login()
         {
-            using (var db = new SimpleAppDb())
-            {
-                var user = db.Users.Include(u=> u.Notes).FirstOrDefault(u=> u.Id == id);
-                var viewModel = new UserProfileViewModel
-                {
-                    UserId = user.Id,
-                    Username = user.Username,
-                    Notes = user.Notes
-                            .Select(x => new NoteViewModel
-                            {
-                                Title = x.Title,
-                                Content = x.Content
-                            })
-                };
-
-                return View(viewModel);
-            }
+            return View();
         }
 
         [HttpPost]
-        public IActionResult<UserProfileViewModel> Profile(AddNoteBindingModel model)
+        public IActionResult Login(LoginUserBindingModel model)
         {
             using (var db = new SimpleAppDb())
             {
-                var user = db.Users.Find(model.UserId);
-                var note = new Note
-                {
-                    Title = model.Title,
-                    Content = model.Content
-                };
+                var foundUser = db.Users.FirstOrDefault(u => u.Username == model.Username);
 
-                user.Notes.Add(note);
+                if (foundUser == null)
+                {
+                    return RedirectToAction("/home/login");
+                }
+
+                db.SaveChanges();
+                this.SignIn(foundUser.Username);
+            }
+
+            return RedirectToAction("home/index");
+        }
+
+        [HttpGet]
+        public IActionResult All()
+        {
+            if (!this.User.IsAuthenticated)
+            {
+                return RedirectToAction("/users/login");
+            }
+
+            Dictionary<int, string> users = new Dictionary<int, string>();
+
+            using (var db = new SimpleAppDb())
+            {
+                users = db.Users.ToDictionary(u => u.Id, u => u.Username);
+            }
+
+            this.Model["users"] =
+                users.Any() ? string.Join(string.Empty, users.Select(u => $"<li><a href=\"/users/profile?id={u.Key}\">{u.Value}</a></li>")) : string.Empty;
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Profile(int id)
+        {
+            if (!this.User.IsAuthenticated)
+            {
+                return RedirectToAction("/users/login");
+            }
+
+            using (var db = new SimpleAppDb())
+            {
+                var currentUser = db.Users.Include(u => u.Notes).FirstOrDefault(u => u.Id == id);
+                var currentUserNotes = currentUser.Notes.ToList();
+                
+                this.Model["username"] = currentUser.Username;
+                this.Model["userid"] = currentUser.Id.ToString();
+                this.Model["notes"] = 
+                    currentUserNotes.Any() 
+                    ? string.Join(string.Empty, currentUserNotes.Select(n => $"<li><strong>{n.Title}</strong> {n.Content}</li>")) 
+                    : "No Notes";
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Profile(AddNoteBindingModel model)
+        {
+            if (!this.IsValidModel(model))
+            {
+                return View();
+            }
+
+            var note = new Note
+            {
+                UserId = model.UserId,
+                Title = model.Title,
+                Content = model.Content
+            };
+
+            using (var db = new SimpleAppDb())
+            {
+                db.Notes.Add(note);
                 db.SaveChanges();
             }
 
-            return Profile(model.UserId);
+            return this.Profile(model.UserId);
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            this.SignOut();
+
+            return RedirectToAction("/home/index");
         }
     }
 }

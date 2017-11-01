@@ -34,7 +34,7 @@
         public IHttpCookieCollection Cookies { get; private set; }
 
         public string Path { get; private set; }
-        
+
         public HttpRequestMethod Method { get; private set; }
 
         public string Url { get; private set; }
@@ -72,7 +72,7 @@
             this.Method = this.ParseMethod(requestLine.First());
             this.Url = requestLine[1];
             this.Path = this.ParsePath(this.Url);
-            
+
             this.ParseHeaders(requestLines);
             this.ParseCookies();
             this.ParseParameters();
@@ -123,13 +123,13 @@
                 BadRequestException.ThrowFromInvalidRequest();
             }
         }
-        
+
         private void ParseCookies()
         {
             if (this.Headers.ContainsKey(HttpHeader.Cookie))
             {
                 var allCookies = this.Headers.Get(HttpHeader.Cookie);
-                
+
                 foreach (var cookie in allCookies)
                 {
                     if (!cookie.Value.Contains('='))
@@ -141,7 +141,7 @@
                         .Value
                         .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
                         .ToList();
-                    
+
                     if (!cookieParts.Any())
                     {
                         continue;
@@ -174,7 +174,7 @@
             var query = this.Url
                 .Split(new[] { '?' }, StringSplitOptions.RemoveEmptyEntries)
                 .Last();
-            
+
             this.ParseQuery(query, this.UrlParameters);
         }
 
@@ -212,7 +212,7 @@
                 dict.Add(queryKey, queryValue);
             }
         }
-        
+
         private void SetSession()
         {
             if (this.Cookies.ContainsKey(SessionStore.SessionCookieKey))

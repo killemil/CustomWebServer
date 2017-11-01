@@ -12,6 +12,8 @@
 
         public string AssemblyName { get; set; }
 
+        public string ResourcesFolder { get; set; }
+
         public string ControllersFolder { get; set; }
 
         public string ControllersSuffix { get; set; }

@@ -11,7 +11,7 @@
     {
         public static void Main()
         {
-            var server = new WebServer(8000, new ControllerRouter());
+            var server = new WebServer(1337,new ControllerRouter(), new ResourceRouter());
             InitializeDatabase();
 
             MvcEngine.Run(server);
